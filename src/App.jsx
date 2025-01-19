@@ -7,6 +7,7 @@ import './App.css';
 import HomePage from "./pages/HomePage";
 import MyLibrary from "./pages/MyLibrary";
 import Account from "./pages/Account";
+import ArticlePage from "./pages/ArticlePage";
 import Layout from "./Layout";
 
 
@@ -27,7 +28,7 @@ const routes = [{
   },
   {
     path: '/my-library/:name', // > /my-library/albumname 
-    element:<MyLibrary />
+    element:<ArticlePage />
   },]
 }]
 
