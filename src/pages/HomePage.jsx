@@ -1,3 +1,14 @@
+import Discover from "../cards/Discover";
+import RecentSearch from "../cards/RecentSearch";
+import TopSongs from "../cards/TopSongs";
+
+
 export default function HomePage() {
-    return <div>This is a Home Page</div>;
+    return (
+        <>
+        <Discover />
+        <RecentSearch/>
+        <TopSongs />
+        </>
+    )
 }
