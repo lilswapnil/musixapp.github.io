@@ -1,9 +1,5 @@
-import { useGetTopChartsQuery } from '../redux/services/shazamCore'
 
 export default function TopSongs() {
-  const { data } =  useGetTopChartsQuery();
-  
-  console.log(data);
   // Use the dummy data for now until the API data is loaded
   const items = Array.from({ length: 100 }, (_, index) => ({
     id: index + 1,
