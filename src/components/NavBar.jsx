@@ -1,4 +1,4 @@
-import { useNavigate, NavLink } from 'react-router-dom';
+import { useNavigate, NavLink, useLocation } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
 import { useState } from 'react';
@@ -6,13 +6,15 @@ import { useState } from 'react';
 export default function NavBar() {
     const [searchInput, setSearchInput] = useState('');
     const navigate = useNavigate();
-    // Add search functionality here
+    const location = useLocation();
+
     const handleSearch = () => {
         if (searchInput.trim()) {
             navigate(`/search?query=${searchInput}`);
-            // Add search functionality here
         }
-    }
+    };
+
+    const isSearchPage = location.pathname === '/search';
 
     return (
         <>
@@ -24,11 +26,10 @@ export default function NavBar() {
                     <li><NavLink to="/my-library">My Library</NavLink></li>
                     <li><NavLink to="/account">Account</NavLink></li>
                 </div>
-                <div className="search-container">
+                <div className={`search-container ${isSearchPage ? 'active' : ''}`}>
                     <input 
                         type="text" 
                         placeholder="Search a song..." 
-                        // Adds value and onChange here
                         value={searchInput}
                         onChange={(e) => setSearchInput(e.target.value)}
                         onKeyDown={(event) => {
@@ -46,5 +47,5 @@ export default function NavBar() {
             </ul>
         </nav>
         </>
-    )
+    );
 }

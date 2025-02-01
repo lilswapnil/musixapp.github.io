@@ -2,11 +2,11 @@ import React, { useState, useEffect } from "react";
 
 const CLIENT_ID = "777c571d7da6439aaf522a3c54cbef52";
 const CLIENT_SECRET = "854ab52143794b74a136f7b1396662fc";
-const PLAYLIST_ID = "6UeSakyzhiEt4NB3UAd6NQ"; // Replace with your Spotify playlist ID
+const PLAYLIST_ID = "4LZtDy62wDvQ4o8JB4UrcR"; // Replace with your Spotify playlist ID
 
-export default function TopSongs() {
+export default function TopAlbums() {
   const [accessToken, setAccessToken] = useState("");
-  const [songs, setSongs] = useState([]);
+  const [albums, setAlbums] = useState([]);
   const [error, setError] = useState("");
 
   useEffect(() => {
@@ -31,11 +31,11 @@ export default function TopSongs() {
 
   useEffect(() => {
     if (accessToken) {
-      fetchSongs();
+      fetchAlbums();
     }
   }, [accessToken]);
 
-  async function fetchSongs() {
+  async function fetchAlbums() {
     try {
       const searchParameters = {
         method: "GET",
@@ -50,39 +50,27 @@ export default function TopSongs() {
         searchParameters
       )
         .then((response) => response.json())
-        .then((data) => data.items.map(item => item.track));
+        .then((data) => data.items.map(item => item.track.album));
 
-      setSongs(playlistData);
+      setAlbums(playlistData);
     } catch (err) {
       setError(err.message || "Something went wrong.");
     }
   }
 
-  // Split songs into groups of 5
-  const groupedSongs = [];
-  for (let i = 0; i < songs.length; i += 5) {
-    groupedSongs.push(songs.slice(i, i + 5));
-  }
-
   return (
     <div className='section-container'>
       <div className="section-heading">
-        <div className="section-title">Top Songs</div>
+        <div className="section-title">Top Albums</div>
       </div>
-      <div className="grid-scroll-container">
-        {groupedSongs.map((group, groupIndex) => (
-          <div key={groupIndex} className="section-group">
-            {group.map((song) => (
-              <div key={song.id} className="section-content-container">
-                <div className="content-image">
-                  <img src={song.album.images[0]?.url} alt={song.name} />
-                </div>
-                <div className="content-information">
-                  <div className="content-song">{song.name}</div>
-                  <div className="content-artist">{song.artists.map((artist) => artist.name).join(", ")}</div>
-                </div>
-              </div>
-            ))}
+      <div className="scroll-container">
+        {albums.map((album) => (
+          <div key={album.id} className="card">
+            <img src={album.images[0]?.url} alt={album.name} />
+            <div className="album-info">
+              <h3>{album.name}</h3>
+              <p>{album.artists.map((artist) => artist.name).join(", ")}</p>
+            </div>
           </div>
         ))}
       </div>

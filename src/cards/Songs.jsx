@@ -10,7 +10,7 @@ export default function Songs({ songs }) {
   return (
     <div className='section-container'>
       <div className="section-heading">
-        <div className="section-title">Top Songs</div>
+        <div className="section-title">Songs</div>
       </div>
       <div className="grid-scroll-container">
         {groupedSongs.map((group, groupIndex) => (

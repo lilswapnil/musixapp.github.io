@@ -1,5 +1,6 @@
 import Discover from "../cards/Discover";
 import RecentSearch from "../cards/RecentSearch";
+import TopAlbums from "../cards/TopAlbums";
 import TopSongs from "../cards/TopSongs";
 export default function HomePage() {
 
@@ -8,6 +9,7 @@ export default function HomePage() {
     <Discover />
     <RecentSearch />
     <TopSongs />
+    <TopAlbums />
     </>
   );
 };
