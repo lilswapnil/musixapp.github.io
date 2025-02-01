@@ -10,6 +10,7 @@ import Account from "./pages/Account";
 import ArticlePage from "./pages/ArticlePage";
 import Layout from "./Layout";
 import NotFoundPage from './pages/NotFoundPage';
+import SearchPage from './pages/SearchPage';
 
 
 const routes = [{
@@ -31,8 +32,12 @@ const routes = [{
   {
     path: '/my-library/:name', // > /my-library/albumname 
     element:<ArticlePage />
-  },]
-}]
+  },
+  {
+    path: '/search',
+    element: <SearchPage />
+  }]
+}];
 
 const router = createBrowserRouter(routes);
 function App() {
