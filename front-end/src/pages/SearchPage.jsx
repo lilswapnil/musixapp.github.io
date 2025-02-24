@@ -97,10 +97,10 @@ export default function SearchPage() {
     <>
       {error && <p className="text-danger">{error}</p>}
       {loading ? (
-        <h1 style={{textAlign: "center", justifySelf: "center"}}>Loading...</h1>
+        <h1 style={{textAlign: "center", justifyContent: "center"}}>Loading...</h1>
       ) : (
         <>
-          <h1>Search Results for "{query}"</h1>
+          <h3>Search Results for "{query}"</h3>
           <Albums albums={albums} />
           <Artists artists={artists} />
           <Songs songs={songs} />

@@ -11,6 +11,8 @@ import ArticlePage from "./pages/ArticlePage";
 import Layout from "./Layout";
 import NotFoundPage from './pages/NotFoundPage';
 import SearchPage from './pages/SearchPage';
+import AlbumPage from './pages/AlbumPage';
+import ArtistPage from './pages/ArtistPage';
 
 
 const routes = [{
@@ -36,7 +38,16 @@ const routes = [{
   {
     path: '/search',
     element: <SearchPage />
-  }]
+  },
+  {
+    path: '/album',
+    element: <AlbumPage />
+  },
+  {
+    path: '/artist',
+    element: <ArtistPage />
+  },
+]
 }];
 
 const router = createBrowserRouter(routes);

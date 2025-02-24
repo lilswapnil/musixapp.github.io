@@ -1,30 +1,37 @@
+/* Root Styles */
 #root {
   max-width: 1380px;
   margin: 0 auto;
   padding: 1rem;
-  --text-color : #f9f9f9;
-  --text-unhighlighted : #515765;
+  --text-color: #f9f9f9;
+  --text-unhighlighted: #515765;
   --white: #ffffff;
   --black: #1a1a1a;
   --gray: #515765;
 }
 
+/* Logo Styles */
 .logo {
   height: 3em;
   will-change: filter;
   transition: filter 300ms;
   color: var(--white);
   display: block;
+  position: absolute;
+  left: 1rem;
   float: left;
   contain: content;
 }
+
 .logo:hover {
   filter: drop-shadow(0 0 2em var(--text-unhighlighted));
 }
+
 .logo.react:hover {
   filter: drop-shadow(0 0 2em var(--text-color));
 }
 
+/* Logo Spin Animation */
 @keyframes logo-spin {
   from {
     transform: rotate(0deg);
@@ -40,15 +47,54 @@
   }
 }
 
+/* Card Styles */
 .card {
-  padding: 2em;
+  border: 1px solid var(--gray);
+  border-radius: 0.5rem;
+  padding: 0.6rem;
+  display: -webkit-inline-box;
+  flex-direction: column;
+  align-items: center;
+  justify-content: start;
+  transition: border-color 0.3s;
+  gap: 0.5rem;
 }
 
+.card img {
+  width: 14.5rem;
+  height: auto;
+  border-radius: 0.5rem;
+}
+
+.card:hover {
+  border-color: var(--text-color);
+  box-shadow: 0px 2px 10px rgba(249, 249, 249, 0.1);
+}
+
+.card-content {
+  text-align: center;
+  justify-self: start;
+  position: relative;
+ 
+}
+
+.cards {
+  border: 1px solid var(--gray);
+  border-radius: 0.5rem;
+  padding: 0.5rem;
+  align-items: center;
+  justify-content: start;
+  transition: border-color 0.3s;
+  gap: 0.5rem;
+  display: inline-flex;
+}
+
+/* Documentation Link Styles */
 .read-the-docs {
   color: var(--text-unhighlighted);
 }
 
-#Links
+/* Link Styles */
 a {
   color: var(--text-color);
   text-decoration: inherit;
@@ -58,6 +104,7 @@ a:hover {
   color: var(--text-color);
 }
 
+/* Heading Styles */
 h1 {
   font-size: 2em;
   line-height: 1.5;
@@ -65,7 +112,7 @@ h1 {
   color: var(--text-color);
 }
 
-
+/* Button Styles */
 button {
   border-radius: 8px;
   border: 1px solid transparent;
@@ -81,29 +128,33 @@ button {
 button:hover {
   border-color: var(--text-color);
 }
+
 button:focus,
 button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
 }
 
+/* Light Mode Styles */
 @media (prefers-color-scheme: light) {
   :root {
     color: #213547;
     background-color: #ffffff;
   }
+
   a:hover {
     color: #747bff;
   }
+
   button {
     background-color: #f9f9f9;
   }
 }
 
+/* Navigation Styles */
 .me-auto {
   text-align: center;
-  border-radius: 10rem; 
+  border-radius: 10rem;
   display: inline-block;
-  /*text-shadow: 1px 1px 5px #ffffff; */
 }
 
 nav {
@@ -120,11 +171,6 @@ nav ul {
   justify-content: center;
   width: 100%;
   position: relative;
-}
-
-.logo {
-  position: absolute;
-  left: 0;
 }
 
 nav li {
@@ -150,6 +196,7 @@ nav a.active {
   text-shadow: 0px 2px 10px var(--text-color);
 }
 
+/* Article Link Styles */
 a h3 {
   color: var(--text-unhighlighted);
   margin-bottom: 0.5em;
@@ -160,27 +207,27 @@ a p {
   font-size: 0.9em;
 }
 
-.sub-text {
-  margin: 0px;
-  padding: 0px;
-}
-
+/* Text Styles */
+.sub-text,
 p {
   margin: 0px;
   padding: 0px;
 }
 
+/* Navbar Links Styles */
 .NavLinks {
   display: flex;
   align-items: center;
 }
 
+/* Search Container Styles */
 .search-container {
   position: absolute;
   right: 0;
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 1rem;
+  padding: 1rem;
 }
 
 .search-icon {
@@ -221,6 +268,7 @@ p {
   border-color: var(--white);
 }
 
+/* Section Container Styles */
 .section-container {
   margin-top: 1rem;
 }
@@ -242,6 +290,7 @@ p {
   cursor: pointer;
 }
 
+/* Scroll Container Styles */
 .scroll-container {
   display: flex;
   overflow-x: auto;
@@ -255,34 +304,13 @@ p {
   display: none; /* Chrome, Safari and Opera */
 }
 
+/* Card Container Styles */
 .card-container {
-  display: flex;
+  display: inline-flex;
   gap: 1rem;
 }
 
-.card {
-  border: 1px solid var(--gray);
-  border-radius: 0.5rem;
-  padding: 0.8rem;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: space-evenly;
-  transition: border-color 0.3s;
-  height: 300px;
-  width: 1000px;
-}
-
-.card img {
-  width: 14rem;
-  height: auto;
-  border-radius: 0.5rem;
-}
-
-.card:hover {
-  box-shadow: 0px 2px 10px var(--text-color);
-}
-
+/* Grid Scroll Container Styles */
 .grid-scroll-container {
   display: flex;
   overflow-x: auto; /* Horizontal scrolling */
@@ -297,6 +325,7 @@ p {
   display: none; /* Chrome, Safari, and Opera */
 }
 
+/* Section Content Container Styles */
 .section-content-container {
   width: auto;
   min-width: 26.5rem;
@@ -326,7 +355,7 @@ p {
   justify-content: center;
 }
 
-/* Add the following styles for the albums grid */
+/* Albums Grid Styles */
 .albums-grid {
   display: grid;
   grid-template-columns: repeat(5, 2fr);
@@ -341,7 +370,7 @@ p {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: space-evenly;
+  justify-content: start;
   transition: border-color 0.3s;
 }
 
@@ -352,7 +381,7 @@ p {
 }
 
 .album-card:hover {
-  border-color: var(--text-color);
+  border-color: var (--text-color);
   box-shadow: 0px 2px 10px rgba(249, 249, 249, 0.1);
 }
 
@@ -364,6 +393,18 @@ p {
 .album-info h3 {
   font-size: 1rem;
   color: var(--text-color);
-  margin-bottom: 0rem;
-  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
+  margin-top: 1rem;
+}
+
+/* Icon Styles */
+.cross-mark-icon {
+  position: relative;
+  left: 2rem;
+  color: var(--text-unhighlighted);
+  cursor: pointer;
+}
+
+.close-icon:hover {
+  color: var(--text-color);
 }

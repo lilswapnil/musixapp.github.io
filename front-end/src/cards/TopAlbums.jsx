@@ -66,8 +66,9 @@ export default function TopAlbums() {
       <div className="scroll-container">
         {albums.map((album) => (
           <div key={album.id} className="card">
-            <img src={album.images[0]?.url} alt={album.name} />
             <div className="album-info">
+            <img src={album.images[0]?.url} alt={album.name} />
+            
               <h3>{album.name}</h3>
               <p>{album.artists.map((artist) => artist.name).join(", ")}</p>
             </div>
