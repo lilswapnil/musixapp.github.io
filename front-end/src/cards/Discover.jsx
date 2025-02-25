@@ -1,27 +1,34 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, lazy, Suspense } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTimes } from '@fortawesome/free-solid-svg-icons';
 
+// Spotify API credentials
 const CLIENT_ID = "777c571d7da6439aaf522a3c54cbef52";
 const CLIENT_SECRET = "854ab52143794b74a136f7b1396662fc";
 
+// API endpoints for different categories
 const API_ENDPOINTS = {
   'Top Charts': { type: 'playlist', id: "6UeSakyzhiEt4NB3UAd6NQ" }, // Replace with your Spotify playlist ID for Top Charts
   'New Releases': { type: 'new-releases', endpoint: "https://api.spotify.com/v1/browse/new-releases?limit=15" }, // Spotify API for New Releases
-  'Featured Playlists': { type: 'featured-playlists', endpoint: "https://api.spotify.com/v1/browse/featured-playlists" }, // Spotify API for Featured Playlists
-  'Genres & Moods': { type: 'genres-moods', endpoint: "https://api.spotify.com/v1/recommendations/available-genre-seeds" }, // Spotify API for Genres & Moods
-  'Artist Spotlight': { type: 'playlist', id: "37i9dQZF1DX5uokaTN4FTR" }, // Replace with your Spotify playlist ID for Artist Spotlight
+  'Featured Playlists': { type: 'featured-playlists', endpoint: "https://api.spotify.com/v1/users/me/playlists?limit=15" }, // Spotify API for Featured Playlists
+  'Genres & Moods': { type: 'genres-moods', endpoint: "https://api.spotify.com/v1/browse/categories?locale=US" }, // Spotify API for Genres & Moods
+  'Artist Spotlight': { type: 'top-artists', endpoint: "https://api.spotify.com/v1/me/top/artists?limit=15" }, // Spotify API for Top Artists
   'Recommended': { type: 'recommendations', endpoint: "https://api.spotify.com/v1/recommendations" } // Spotify API for Recommendations
 };
 
-export default function Discover() {
-  const [activeCard, setActiveCard] = useState(null);
-  const [accessToken, setAccessToken] = useState("");
-  const [songs, setSongs] = useState([]);
-  const [error, setError] = useState("");
+// Lazy load the SongCard component with a 2-second delay
+const SongCard = lazy(() => new Promise(resolve => {
+  setTimeout(() => resolve(import('./SongCard')), 2000); // 2 seconds delay
+}));
 
+export default function Discover() {
+  const [activeCard, setActiveCard] = useState(null); // State to track the active card
+  const [accessToken, setAccessToken] = useState(""); // State to store the access token
+  const [songs, setSongs] = useState([]); // State to store the fetched songs
+  const [error, setError] = useState(""); // State to store any errors
+
+  // Fetch the access token when the component mounts
   useEffect(() => {
-    // Get API access token
     const authParameters = {
       method: "POST",
       headers: {
@@ -40,6 +47,7 @@ export default function Discover() {
       .catch(() => setError("Failed to authenticate with Spotify."));
   }, []);
 
+  // Fetch songs based on the active card and access token
   useEffect(() => {
     if (accessToken && activeCard !== null) {
       const apiInfo = API_ENDPOINTS[activeCard];
@@ -53,10 +61,13 @@ export default function Discover() {
         fetchGenresMoods(apiInfo.endpoint);
       } else if (apiInfo.type === 'featured-playlists') {
         fetchFeaturedPlaylists(apiInfo.endpoint);
+      } else if (apiInfo.type === 'top-artists') {
+        fetchTopArtists(apiInfo.endpoint);
       }
     }
   }, [accessToken, activeCard]);
 
+  // Fetch songs from a playlist
   async function fetchPlaylistSongs(playlistId) {
     try {
       const searchParameters = {
@@ -83,6 +94,7 @@ export default function Discover() {
     }
   }
 
+  // Fetch recommendations
   async function fetchRecommendations(endpoint) {
     try {
       const searchParameters = {
@@ -106,6 +118,7 @@ export default function Discover() {
     }
   }
 
+  // Fetch genres and moods
   async function fetchGenresMoods(endpoint) {
     try {
       const searchParameters = {
@@ -123,17 +136,19 @@ export default function Discover() {
       }
 
       const genresMoodsData = await response.json();
-      setSongs(genresMoodsData.genres.map(genre => ({
-        id: genre,
-        name: genre,
+
+      setSongs(genresMoodsData.categories.items.map(category => ({
+        id: category.id,
+        name: category.name,
         artists: [],
-        album: { images: [{ url: "https://via.placeholder.com/150" }] }
+        album: { images: [{ url: category.icons[0].url }] }
       })));
     } catch (err) {
       setError(err.message || "Something went wrong.");
     }
   }
 
+  // Fetch new releases
   async function fetchNewReleases(endpoint) {
     try {
       const searchParameters = {
@@ -155,13 +170,15 @@ export default function Discover() {
         id: album.id,
         name: album.name,
         artists: album.artists,
-        album: { images: album.images }
+        album: { images: album.images },
+        preview_url: album.preview_url
       })));
     } catch (err) {
       setError(err.message || "Something went wrong.");
     }
   }
 
+  // Fetch featured playlists
   async function fetchFeaturedPlaylists(endpoint) {
     try {
       const searchParameters = {
@@ -173,28 +190,62 @@ export default function Discover() {
       };
 
       const response = await fetch(endpoint, searchParameters);
-
       if (!response.ok) {
         throw new Error("Failed to fetch featured playlists");
       }
 
+      // Print the data to the console
       const featuredPlaylistsData = await response.json();
-      setSongs(featuredPlaylistsData.playlists.items.map(playlist => ({
+
+      setSongs(featuredPlaylistsData.items.map(playlist => ({
         id: playlist.id,
         name: playlist.name,
         artists: [],
-        album: { images: playlist.images }
+        album: { images: playlist.images },
+        preview_url: playlist.preview_url
       })));
     } catch (err) {
       setError(err.message || "Something went wrong.");
     }
   }
 
+  // Fetch top artists
+  async function fetchTopArtists(endpoint) {
+    try {
+      const searchParameters = {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + accessToken,
+        },
+      };
+
+      const response = await fetch(endpoint, searchParameters);
+      console.log(response);
+      if (!response.ok) {
+        throw new Error("Failed to fetch top artists");
+      }
+
+      const topArtistsData = await response.json();
+      console.log(topArtistsData);
+      setSongs(topArtistsData.items.map(artist => ({
+        id: artist.id,
+        name: artist.name,
+        artists: [artist],
+        album: { images: artist.images },
+        preview_url: artist.preview_url
+      })));
+    } catch (err) {
+      setError(err.message || "Something went wrong.");
+    }
+  }
+
+  // Handle card click to set the active card
   const handleCardClick = (cardTitle) => {
     setActiveCard(activeCard === cardTitle ? null : cardTitle);
   };
 
-  // Split songs into groups of 5
+  // Split songs into groups of 5 for display
   const groupedSongs = [];
   for (let i = 0; i < songs.length; i += 5) {
     groupedSongs.push(songs.slice(i, i + 5));
@@ -224,21 +275,15 @@ export default function Discover() {
       {activeCard !== null && (
         <div className="section-container">
           <div className="grid-scroll-container">
-            {groupedSongs.map((group, groupIndex) => (
-              <div key={groupIndex} className="section-group">
-                {group.map((song) => (
-                  <div key={song.id} className="section-content-container">
-                    <div className="content-image">
-                      <img src={song.album.images[0]?.url} alt={song.name} />
-                    </div>
-                    <div className="content-information">
-                      <div className="content-song">{song.name}</div>
-                      <div className="content-artist">{song.artists.map((artist) => artist.name).join(", ")}</div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            ))}
+            <Suspense fallback={<div className="loading-spinner">Loading...</div>}>
+              {groupedSongs.map((group, groupIndex) => (
+                <div key={groupIndex} className="section-group">
+                  {group.map((song) => (
+                    <SongCard key={song.id} song={song} />
+                  ))}
+                </div>
+              ))}
+            </Suspense>
           </div>
         </div>
       )}

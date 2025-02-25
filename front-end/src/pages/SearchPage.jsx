@@ -86,6 +86,7 @@ export default function SearchPage() {
       )
         .then((response) => response.json())
         .then((data) => setSongs(data.tracks));
+
     } catch (err) {
       setError(err.message || "Something went wrong.");
     } finally {
@@ -101,9 +102,9 @@ export default function SearchPage() {
       ) : (
         <>
           <h3>Search Results for "{query}"</h3>
+          <Songs songs={songs} />
           <Albums albums={albums} />
           <Artists artists={artists} />
-          <Songs songs={songs} />
         </>
       )}
     </>

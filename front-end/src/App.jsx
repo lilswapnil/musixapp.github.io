@@ -13,6 +13,8 @@ import NotFoundPage from './pages/NotFoundPage';
 import SearchPage from './pages/SearchPage';
 import AlbumPage from './pages/AlbumPage';
 import ArtistPage from './pages/ArtistPage';
+import LoginPage from './pages/LoginPage';
+import SignupPage from './pages/SignupPage';
 
 
 const routes = [{
@@ -46,6 +48,14 @@ const routes = [{
   {
     path: '/artist',
     element: <ArtistPage />
+  },
+  {
+    path: '/login',
+    element: <LoginPage />
+  },
+  {
+    path: '/singup',
+    element: <SignupPage />
   },
 ]
 }];

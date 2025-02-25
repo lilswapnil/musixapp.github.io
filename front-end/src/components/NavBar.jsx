@@ -2,6 +2,7 @@ import { useNavigate, NavLink, useLocation } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
 import { useState } from 'react';
+import logo from '../assets/logo-light.svg';
 
 export default function NavBar() {
     const [searchInput, setSearchInput] = useState('');
@@ -20,10 +21,10 @@ export default function NavBar() {
         <>
         <nav>
             <ul>   
-                <img className='logo' src='./logo-light.svg' alt="logo" />
+                <img className='logo' src={ logo } alt="logo" />
                 <div className="nav-links">
                     <li><NavLink to="/">Home</NavLink></li>
-                    <li><NavLink to="/my-library">My Library</NavLink></li>
+                    <li><NavLink to="/my-library">Library</NavLink></li>
                     <li><NavLink to="/account">Account</NavLink></li>
                 </div>
                 <div className={`search-container ${isSearchPage ? 'active' : ''}`}>
