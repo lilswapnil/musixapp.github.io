@@ -55,9 +55,19 @@ export default function SearchPage() {
         },
       };
 
+      // Search for the songs
+      const songData = await fetch(
+        `https://api.spotify.com/v1/search?q=${searchInput}&type=track&limit=50`,
+        searchParameters
+      )
+        .then((response) => response.json())
+        .then((data) => data.tracks.items);
+
+      setSongs(songData);
+
       // Search for the artist ID
       const artistData = await fetch(
-        "https://api.spotify.com/v1/search?q=" + searchInput + "&type=artist",
+        `https://api.spotify.com/v1/search?q=${searchInput}&type=artist`,
         searchParameters
       )
         .then((response) => response.json())
@@ -79,14 +89,6 @@ export default function SearchPage() {
         .then((response) => response.json())
         .then((data) => setAlbums(data.items));
 
-      // Fetch songs for the artist
-      await fetch(
-        `https://api.spotify.com/v1/artists/${artistID}/top-tracks?market=US`,
-        searchParameters
-      )
-        .then((response) => response.json())
-        .then((data) => setSongs(data.tracks));
-
     } catch (err) {
       setError(err.message || "Something went wrong.");
     } finally {
@@ -98,7 +100,7 @@ export default function SearchPage() {
     <>
       {error && <p className="text-danger">{error}</p>}
       {loading ? (
-        <h1 style={{textAlign: "center", justifyContent: "center"}}>Loading...</h1>
+        <h1 style={{ textAlign: "center", justifyContent: "center" }}>Loading...</h1>
       ) : (
         <>
           <h3>Search Results for "{query}"</h3>
