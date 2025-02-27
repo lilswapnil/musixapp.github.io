@@ -7,6 +7,7 @@ export default function ArticleList({ articles }) {
             <Link key={a.name} to= {'/my-library/' + a.name}>
                 <h3>{a.title}</h3>
                 <p>{a.content[0].substring(0, 150)}</p>
+                
             </Link>
             
         ))}

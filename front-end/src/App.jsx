@@ -15,6 +15,7 @@ import AlbumPage from './pages/AlbumPage';
 import ArtistPage from './pages/ArtistPage';
 import LoginPage from './pages/LoginPage';
 import SignupPage from './pages/SignupPage';
+import axios from 'axios';
 
 
 const routes = [{
@@ -33,9 +34,15 @@ const routes = [{
     path: '/account',
     element:<Account />
   },
+  //backend Testing
   {
     path: '/my-library/:name', // > /my-library/albumname 
-    element:<ArticlePage />
+    element:<ArticlePage />,
+    loader: async ({ params }) => {
+      const response = await axios.get(`/api/articles/${params.name}`);
+      const { upvotes, comments } = response.data;
+      return { upvotes, comments };
+    }
   },
   {
     path: '/search',
@@ -54,7 +61,7 @@ const routes = [{
     element: <LoginPage />
   },
   {
-    path: '/singup',
+    path: '/signup',
     element: <SignupPage />
   },
 ]

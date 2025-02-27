@@ -11,7 +11,13 @@ export default function Account() {
 
   useEffect(() => {
     // Fetch user details from the server
-    fetch('/api/user')
+    const token = localStorage.getItem('token'); // Assuming you store the token in localStorage
+    console.log('Token:', token); // Log the token to verify
+    fetch('/api/user', {
+      headers: {
+        'Authorization': `Bearer ${token}`
+      }
+    })
       .then(response => response.json())
       .then(data => {
         setUser(data);
@@ -20,6 +26,9 @@ export default function Account() {
           email: data.email,
           profilePicture: data.profilePicture
         });
+      })
+      .catch(error => {
+        console.error('Error fetching user details:', error);
       });
   }, []);
 
@@ -32,11 +41,13 @@ export default function Account() {
   };
 
   const handleSave = () => {
+    const token = localStorage.getItem('token'); // Assuming you store the token in localStorage
     // Save user details to the server
     fetch('/api/user', {
       method: 'PUT',
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
       },
       body: JSON.stringify(formData)
     })
@@ -44,6 +55,9 @@ export default function Account() {
       .then(data => {
         setUser(data);
         setIsEditing(false);
+      })
+      .catch(error => {
+        console.error('Error updating user details:', error);
       });
   };
 

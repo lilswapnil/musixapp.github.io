@@ -1,6 +1,7 @@
 import React, { useState, useEffect, lazy, Suspense } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTimes } from '@fortawesome/free-solid-svg-icons';
+import Songs from './Songs';
 
 // Spotify API credentials
 const CLIENT_ID = "777c571d7da6439aaf522a3c54cbef52";
@@ -245,12 +246,6 @@ export default function Discover() {
     setActiveCard(activeCard === cardTitle ? null : cardTitle);
   };
 
-  // Split songs into groups of 5 for display
-  const groupedSongs = [];
-  for (let i = 0; i < songs.length; i += 5) {
-    groupedSongs.push(songs.slice(i, i + 5));
-  }
-
   return (
     <div className='section-container'>
       <div className="section-heading">
@@ -276,13 +271,7 @@ export default function Discover() {
         <div className="section-container">
           <div className="grid-scroll-container">
             <Suspense fallback={<div className="loading-spinner">Loading...</div>}>
-              {groupedSongs.map((group, groupIndex) => (
-                <div key={groupIndex} className="section-group">
-                  {group.map((song) => (
-                    <SongCard key={song.id} song={song} />
-                  ))}
-                </div>
-              ))}
+              <Songs songs={songs} />
             </Suspense>
           </div>
         </div>
