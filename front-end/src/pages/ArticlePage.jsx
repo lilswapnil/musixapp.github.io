@@ -7,7 +7,7 @@ export default function ArticlePage() {
     const article = articleContent.find(article => article.name === name);
     return (
         <div>
-            <h1> Article: { name }</h1>
+            <h1> { name }</h1>
             <h1>{article.title}</h1>
             <p>Upvotes: {upvotes}</p>
             {article.content.map((paragraph, key) => (
