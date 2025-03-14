@@ -107,9 +107,11 @@ export default function Account() {
         <div className="scroll-container">
           {recentlyPlayed.map((item, index) => (
             <div key={index} className="card">
+              <div className="album-info">
               <img src={item.track.album.images[0]?.url} alt={item.track.name} />
               <p>{item.track.name}</p>
               <p>{item.track.artists.map(artist => artist.name).join(', ')}</p>
+              </div>
             </div>
           ))}
         </div>
