@@ -1,70 +1,23 @@
-const CLIENT_ID = import.meta.env.VITE_SPOTIFY_CLIENT_ID
-
-
-export default function Account() {
-    return(
-        <h1>H1</h1>
-    )
-}
-
-/* import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import logo from '../assets/man.png';
 
 const CLIENT_ID = import.meta.env.VITE_SPOTIFY_CLIENT_ID;
-const REDIRECT_URI = import.meta.env.VITE_SPOTIFY_URI;
+const REDIRECT_URI = import.meta.env.VITE_SPOTIFY_REDIRECT_URI;
 
 export default function Account() {
   const [user, setUser] = useState(null);
-  const [playlists, setPlaylists] = useState([]);
   const [error, setError] = useState('');
 
   useEffect(() => {
-    // Fetch user details from the server
-    const token = localStorage.getItem('token'); // Assuming you store the token in localStorage
-    fetch('/api/user', {
-      headers: {
-        'Authorization': `Bearer ${token}`
-      }
-    })
-      .then(response => response.json())
-      .then(data => {
-        setUser(data);
-      })
-      .catch(error => {
-        console.error('Error fetching user details:', error);
-      });
-
-    // Check if we have an access token in the URL fragment
-    const hash = window.location.hash;
-    const accessToken = new URLSearchParams(hash.substring(1)).get('access_token');
+    // Retrieve the access token from localStorage
+    const accessToken = localStorage.getItem('spotify_access_token');
     if (accessToken) {
-      fetchUserPlaylists(accessToken);
       fetchSpotifyUserData(accessToken);
     } else {
       // Redirect to Spotify login
       window.location.href = `https://accounts.spotify.com/authorize?response_type=token&client_id=${CLIENT_ID}&redirect_uri=${REDIRECT_URI}&scope=user-read-private user-read-email playlist-read-private`;
     }
   }, []);
-
-  async function fetchUserPlaylists(accessToken) {
-    try {
-      const searchParameters = {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${accessToken}`,
-        },
-      };
-
-      const playlistData = await fetch('https://api.spotify.com/v1/me/playlists', searchParameters)
-        .then(response => response.json())
-        .then(data => data.items);
-
-      setPlaylists(playlistData);
-    } catch (err) {
-      setError(err.message || 'Something went wrong.');
-    }
-  }
 
   async function fetchSpotifyUserData(accessToken) {
     try {
@@ -79,6 +32,7 @@ export default function Account() {
       const userData = await fetch('https://api.spotify.com/v1/me', searchParameters)
         .then(response => response.json());
 
+      console.log(userData);
       setUser(userData);
     } catch (err) {
       setError(err.message || 'Something went wrong.');
@@ -98,14 +52,6 @@ export default function Account() {
           <div className="user-content">
             <h2>{user.display_name}</h2>
             <p>{user.email}</p>
-            <div className="scroll-container">
-              {playlists.map((playlist) => (
-                <div key={playlist.id} className="card">
-                  <img src={playlist.images[0]?.url} alt={playlist.name} />
-                  <p>{playlist.name}</p>
-                </div>
-              ))}
-            </div>
           </div>
         </div>
       </div>
@@ -128,4 +74,3 @@ export default function Account() {
     </div>
   );
 }
-  */

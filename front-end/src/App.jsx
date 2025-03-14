@@ -15,6 +15,7 @@ import AlbumPage from './pages/AlbumPage';
 import ArtistPage from './pages/ArtistPage';
 import LoginPage from './pages/LoginPage';
 import SignupPage from './pages/SignupPage';
+import Callback from './pages/Callback'; // Import the Callback component
 import axios from 'axios';
 
 const routes = [{
@@ -61,6 +62,10 @@ const routes = [{
   {
     path: '/signup',
     element: <SignupPage />
+  },
+  {
+    path: '/callback', // Add the callback route
+    element: <Callback />
   },
 ]
 }];
