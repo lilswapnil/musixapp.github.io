@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { setToken } from '../utils/tokenCache';
 
 export default function Callback() {
   const navigate = useNavigate();
@@ -9,8 +10,8 @@ export default function Callback() {
     const hash = window.location.hash;
     const accessToken = new URLSearchParams(hash.substring(1)).get('access_token');
     if (accessToken) {
-      // Store the access token in localStorage
-      localStorage.setItem('spotify_access_token', accessToken);
+      // Store the access token in the cache
+      setToken(accessToken);
       // Redirect to the account page
       navigate('/account');
     } else {

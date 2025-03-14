@@ -4,7 +4,7 @@ import { faTimes } from '@fortawesome/free-solid-svg-icons';
 import Songs from './Songs';
 
 const CLIENT_ID = import.meta.env.VITE_SPOTIFY_CLIENT_ID;
-const CLIENT_SECRET = import.meta.env.VITE_SPOTIFY_CLIENT_SECRET;
+const REDIRECT_URI = import.meta.env.VITE_SPOTIFY_REDIRECT_URI;
 
 const API_ENDPOINTS = {
   'Recently Played': { type: 'recently-played', endpoint: "https://api.spotify.com/v1/me/player/recently-played?limit=15" },
@@ -22,11 +22,14 @@ export default function RecentSearch() {
   const [error, setError] = useState("");
 
   useEffect(() => {
-    // Fetch the access token from the backend
-    fetch('/callback')
-      .then(response => response.json())
-      .then(data => setAccessToken(data.accessToken))
-      .catch(() => setError("Failed to authenticate with Spotify."));
+    // Retrieve the access token from localStorage
+    const token = localStorage.getItem('spotify_access_token');
+    if (token) {
+      setAccessToken(token);
+    } else {
+      // Redirect to Spotify login
+      window.location.href = `https://accounts.spotify.com/authorize?response_type=token&client_id=${CLIENT_ID}&redirect_uri=${REDIRECT_URI}&scope=user-read-private user-read-email user-read-recently-played`;
+    }
   }, []);
 
   // Fetch songs based on the active card and access token
@@ -37,16 +40,12 @@ export default function RecentSearch() {
         fetchRecentlyPlayed(apiInfo.endpoint);
       }
       if (apiInfo.type === 'last-week') {
-        fetchRecentlyPlayed(apiInfo.endpoint);
+        fetchLastWeek(apiInfo.endpoint);
       }
     }
   }, [accessToken, activeCard]);
 
-
- 
-
-
- //Most Played
+//Most Played
    async function fetchMostPlayed(endpoint) {}
  //Favorites
    async function fetchFavorites(endpoint) {}
@@ -55,7 +54,6 @@ export default function RecentSearch() {
  //Quick Access
    async function fetchQuickAccess(endpoint) {}
    
-   
   // Fetch songs from Recently Played API
   async function fetchRecentlyPlayed(endpoint) {
     try {
@@ -63,12 +61,13 @@ export default function RecentSearch() {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
-          Authorization: "Bearer " + accessToken,
+          Authorization: `Bearer ${accessToken}`,
         },
       };
 
       const response = await fetch(endpoint, searchParameters);
-      console.log(response);
+      console.log(response)
+
       if (!response.ok) {
         throw new Error("Failed to fetch recently played songs");
       }
@@ -80,17 +79,25 @@ export default function RecentSearch() {
     }
   }
 
-  //Last Week
+  // Fetch songs from Last Week API
   async function fetchLastWeek(endpoint) {
     try {
-     const response = await fetch(endpoint, searchParameters);
-     if (!response.ok) {
-      throw new Error("Failed to fetch recently played songs");
-     } 
-     const lastWeekData = await response.json();
-     setSongs(lastWeekData.items.map(item => item.track));
-    }
-    catch (err) {
+      const searchParameters = {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${accessToken}`,
+        },
+      };
+
+      const response = await fetch(endpoint, searchParameters);
+      if (!response.ok) {
+        throw new Error("Failed to fetch last week's songs");
+      }
+
+      const lastWeekData = await response.json();
+      setSongs(lastWeekData.items.map(item => item.track));
+    } catch (err) {
       setError(err.message || "Something went wrong.");
     }
   }
