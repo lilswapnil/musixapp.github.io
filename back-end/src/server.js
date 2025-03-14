@@ -2,19 +2,16 @@ import express from 'express';
 import { MongoClient, ServerApiVersion } from 'mongodb';
 import axios from 'axios';
 import bodyParser from 'body-parser';
+import dotenv from 'dotenv';
 
-//Backend Testing Code
-const articleInfo = [
-  { name: 'learn-node', upvotes: 0, comments: [] },
-  { name: 'learn-react', upvotes: 0, comments: [] },
-  { name: 'mongodb', upvotes: 0, comments: [] },
-]
+dotenv.config();
 
 const app = express();
 const PORT = process.env.PORT || 5001;
-const CLIENT_ID = '777c571d7da6439aaf522a3c54cbef52';
-const CLIENT_SECRET = '854ab52143794b74a136f7b1396662fc';
-const REDIRECT_URI = 'http://localhost:5001/callback';
+const CLIENT_ID = process.env.SPOTIFY_CLIENT_ID;
+const CLIENT_SECRET = process.env.SPOTIFY_CLIENT_SECRET;
+const REDIRECT_URI = 'http://localhost:5173/callback'; // Update to match the registered URI
+const JWT_SECRET = process.env.JWT_SECRET;
 
 app.use(express.json());
 app.use(bodyParser.json());
@@ -37,26 +34,8 @@ async function connectToDB() {
   db = client.db('musix-db');
 }
 
-app.get('/api/articles/:name', async (req, res) => {
-  const { name } = req.params;
-  const article = await db.collection('articles').findOne({ name });
-  res.json(article);
-});
-
-app.post('/api/articles/:name/upvote', async (req, res) => {
-  const { name } = req.params;
-
-  const updatedArticle = await db.collection('articles').findOneAndUpdate({ name }, {
-    $inc: { upvotes: 1 }
-  }, {
-    returnDocument: "after",
-  });
-
-  res.json(updatedArticle);
-});
-
 app.get('/login', (req, res) => {
-  const scopes = 'user-read-recently-played';
+  const scopes = 'user-read-private user-read-email playlist-read-private';
   res.redirect('https://accounts.spotify.com/authorize' +
     '?response_type=code' +
     '&client_id=' + CLIENT_ID +
@@ -90,19 +69,6 @@ app.get('/callback', async (req, res) => {
 
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
-});
-
-app.post('/api/articles/:name/comments', async (req, res) => {
-  const { name } = req.params;
-  const { postedBy, text } = req.body;
-
-  const updatedArticle = await db.collection('articles').findOneAndUpdate(
-    { name },
-    { $push: { comments: { postedBy, text } } },
-    { returnDocument: "after" }
-  );
-
-  res.json(updatedArticle);
 });
 
 async function start() {

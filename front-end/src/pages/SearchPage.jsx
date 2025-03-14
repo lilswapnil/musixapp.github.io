@@ -4,8 +4,8 @@ import Albums from "../cards/Albums";
 import Artists from "../cards/Artists";
 import Songs from "../cards/Songs";
 
-const CLIENT_ID = "777c571d7da6439aaf522a3c54cbef52";
-const CLIENT_SECRET = "854ab52143794b74a136f7b1396662fc";
+const CLIENT_ID = import.meta.env.VITE_SPOTIFY_CLIENT_ID;
+const CLIENT_SECRET = import.meta.env.VITE_SPOTIFY_CLIENT_SECRET;
 
 export default function SearchPage() {
   const [accessToken, setAccessToken] = useState("");

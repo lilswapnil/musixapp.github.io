@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import Songs from './Songs';
 
-const CLIENT_ID = "777c571d7da6439aaf522a3c54cbef52";
-const CLIENT_SECRET = "854ab52143794b74a136f7b1396662fc";
+const CLIENT_ID = import.meta.env.VITE_SPOTIFY_CLIENT_ID;
+const CLIENT_SECRET = import.meta.env.VITE_SPOTIFY_CLIENT_SECRET;
 const PLAYLIST_ID = "6UeSakyzhiEt4NB3UAd6NQ"; // Replace with your Spotify playlist ID
 
 export default function TopSongs() {

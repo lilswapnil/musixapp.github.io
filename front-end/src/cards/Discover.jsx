@@ -4,8 +4,8 @@ import { faTimes } from '@fortawesome/free-solid-svg-icons';
 import Songs from './Songs';
 
 // Spotify API credentials
-const CLIENT_ID = "777c571d7da6439aaf522a3c54cbef52";
-const CLIENT_SECRET = "854ab52143794b74a136f7b1396662fc";
+const CLIENT_ID = import.meta.env.VITE_SPOTIFY_CLIENT_ID;
+const CLIENT_SECRET = import.meta.env.VITE_SPOTIFY_CLIENT_SECRET;
 
 // API endpoints for different categories
 const API_ENDPOINTS = {
@@ -161,7 +161,7 @@ export default function Discover() {
       };
 
       const response = await fetch(endpoint, searchParameters);
-
+      console.log("Hi");
       if (!response.ok) {
         throw new Error("Failed to fetch new releases");
       }

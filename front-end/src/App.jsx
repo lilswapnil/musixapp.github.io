@@ -1,7 +1,7 @@
 import {
   createBrowserRouter,
   RouterProvider,
-}  from 'react-router-dom'
+} from 'react-router-dom';
 
 import './App.css';
 import HomePage from "./pages/HomePage";
@@ -17,27 +17,25 @@ import LoginPage from './pages/LoginPage';
 import SignupPage from './pages/SignupPage';
 import axios from 'axios';
 
-
 const routes = [{
   path: '/',
   element: <Layout />,
   errorElement: <NotFoundPage />,
   children: [{
     path: '/',
-    element:<HomePage />
+    element: <HomePage />
   },
   {
     path: '/my-library',
-    element:<MyLibrary />
+    element: <MyLibrary />
   },
   {
     path: '/account',
-    element:<Account />
+    element: <Account />
   },
-  //backend Testing
   {
-    path: '/my-library/:name', // > /my-library/albumname 
-    element:<ArticlePage />,
+    path: '/my-library/:name',
+    element: <ArticlePage />,
     loader: async ({ params }) => {
       const response = await axios.get(`/api/articles/${params.name}`);
       const { upvotes, comments } = response.data;
@@ -68,6 +66,7 @@ const routes = [{
 }];
 
 const router = createBrowserRouter(routes);
+
 function App() {
   return (
     <>

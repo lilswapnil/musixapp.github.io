@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import logo from '../assets/logo-light.png';
 
 export default function SignupPage() {
   const [formData, setFormData] = useState({
@@ -37,10 +38,13 @@ export default function SignupPage() {
   };
 
   return (
-    <div>
-      <h2>Signup</h2>
-      <form onSubmit={handleSubmit}>
-        <div>
+    <div className='section-container'>
+      <div className="section-header">
+        <img className='site-logo' src={logo} alt="logo" />
+      </div>
+      <div className='login-content'>
+      <form className="form" onSubmit={handleSubmit}>
+      <div className='form-group'>
           <label>Email:</label>
           <input
             type="email"
@@ -48,9 +52,9 @@ export default function SignupPage() {
             value={formData.email}
             onChange={handleChange}
           />
-        </div>
-        <div>
-          <label>Username:</label>
+      </div>
+      <div className='form-group'>
+          <label>Create Username:</label>
           <input
             type="text"
             name="username"
@@ -58,8 +62,8 @@ export default function SignupPage() {
             onChange={handleChange}
           />
         </div>
-        <div>
-          <label>Password:</label>
+        <div className='form-group'>
+          <label>Create Password:</label>
           <input
             type="password"
             name="password"
@@ -69,6 +73,7 @@ export default function SignupPage() {
         </div>
         <button type="submit">Signup</button>
       </form>
+    </div>
     </div>
   );
 }

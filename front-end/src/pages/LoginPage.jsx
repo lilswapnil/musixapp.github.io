@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
+import logo from '../assets/logo-light.png';
 
 export default function LoginPage() {
   const [formData, setFormData] = useState({
@@ -36,9 +38,13 @@ export default function LoginPage() {
   };
 
   return (
-    <div className='login-content'>
+    <div className='section-container'>
+      <div className="section-header">
+          <img className='site-logo' src={logo} alt="logo" />
+      </div>
+      <div className='login-content'>
       <h1>Login</h1>
-      <form className = "form" onSubmit={handleSubmit}>
+      <form className="form" onSubmit={handleSubmit}>
         <div className='form-group'>
           <label>Email or Username:</label>
           <input
@@ -57,8 +63,15 @@ export default function LoginPage() {
             onChange={handleChange}
           />
         </div>
-        <button className = "button" type="submit">Login</button>
+        <button className="button" type="submit">Login</button>
+        <div className='signup-warning'>
+          <p>Don't have an account?  </p> 
+          
+          <Link to="/signup">Sign Up</Link>
+        </div>
       </form>
     </div>
+    </div>
+    
   );
 }
